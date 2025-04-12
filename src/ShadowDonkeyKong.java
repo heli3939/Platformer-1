@@ -1,5 +1,4 @@
 import bagel.*;
-
 import java.util.Properties;
 
 /**
@@ -46,12 +45,21 @@ public class ShadowDonkeyKong extends AbstractGame {
         if (gameScreen.equals(HOME_SCREEN)){
             HomeScreen(input);
         } else if (gameScreen.equals(GAMEPLAY_SCREEN)) {
-            // add later
+            GamePlayScreen(input);
         } else if (gameScreen.equals(GAME_ENDING)) {
             // add later
         }
     }
 
+    private void GamePlayScreen (Input input){
+        String[] platformCoord = GAME_PROPS.getProperty("platforms").split(";");
+        for (String coord : platformCoord) {
+            Platform platform;
+            String [] c = coord.split(",");
+            platform = new Platform(Integer.parseInt(c[0]), Integer.parseInt(c[1]));
+            platform.drawImage();
+        }
+    }
 
     private void HomeScreen (Input input){
         HomeScreenBG.draw( Integer.parseInt(GAME_PROPS.getProperty("window.width")) / 2.0,
@@ -88,6 +96,4 @@ public class ShadowDonkeyKong extends AbstractGame {
         ShadowDonkeyKong game = new ShadowDonkeyKong(gameProps, messageProps);
         game.run();
     }
-
-
 }
