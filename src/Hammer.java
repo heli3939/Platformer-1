@@ -1,0 +1,6 @@
+public class Hammer extends GameEntity{
+    private final static String HAMMER_IMG = "res/hammer.png";
+    public Hammer(int x, int y) {
+        super(HAMMER_IMG, x, y);
+    }
+}
