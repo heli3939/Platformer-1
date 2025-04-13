@@ -38,6 +38,9 @@ public class ShadowDonkeyKong extends AbstractGame {
     private Hammer hammer;
     private Donkey donkey;
 
+    private Timer timer;
+    private ScoreCounter scoreCounter;
+
     private final Image BACKGROUND;
 
     public ShadowDonkeyKong(Properties gameProps, Properties messageProps) {
@@ -89,6 +92,9 @@ public class ShadowDonkeyKong extends AbstractGame {
                 Integer.parseInt(GAME_PROPS.getProperty("hammer.start.y")));
         donkey = new Donkey(Integer.parseInt(GAME_PROPS.getProperty("donkey.x")),
                 Integer.parseInt(GAME_PROPS.getProperty("donkey.y")));
+
+        timer = new Timer(Integer.parseInt(GAME_PROPS.getProperty("gamePlay.maxFrames")));
+        scoreCounter = new ScoreCounter(0);
     }
     
     /**
@@ -97,6 +103,7 @@ public class ShadowDonkeyKong extends AbstractGame {
      */
     @Override
     protected void update(Input input) {
+        timer.Update();
         if (input.wasPressed(Keys.ESCAPE)) {
             Window.close();
         }
@@ -130,6 +137,15 @@ public class ShadowDonkeyKong extends AbstractGame {
         mario.drawImage();
         hammer.drawImage();
         donkey.drawImage();
+
+        final Font fontScoreTime = new Font(GAME_PROPS.getProperty("font"),
+                Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.fontSize")));
+        fontScoreTime.drawString("TIME LEFT " + timer.RemainingTime(),
+                Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.x")),
+                Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.y")) + 30);
+        fontScoreTime.drawString("SCORE " + ScoreCounter.getCurrentScore(),
+                Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.x")),
+                Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.y")));
     }
 
     private void HomeScreen (Input input){
