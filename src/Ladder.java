@@ -1,3 +1,5 @@
+import bagel.Input;
+
 public class Ladder extends GameEntity{
     private final static String LADDER_IMG = "res/ladder.png";
 
@@ -7,7 +9,7 @@ public class Ladder extends GameEntity{
     }
 
     @Override
-    public void UpdatePostition(Platform[] platforms){
+    public void UpdatePostition(Platform[] platforms, Input input){
 
     }
 

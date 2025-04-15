@@ -1,10 +1,11 @@
 import bagel.Image;
+import bagel.Input;
 import bagel.util.Rectangle;
 import bagel.util.Point;
 
 
 public abstract class GameEntity {
-    public final int x;
+    public int x;
     public int y;
     public final Image image;
 
@@ -26,6 +27,6 @@ public abstract class GameEntity {
         return (this.getBoundingBox()).intersects(other.getBoundingBox());
     }
 
-    public abstract void UpdatePostition(Platform[] platforms);
+    public abstract void UpdatePostition(Platform[] platforms, Input input);
 
 }

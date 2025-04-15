@@ -46,7 +46,12 @@ public class ShadowDonkeyKong extends AbstractGame {
     static public final double JUMPHEIGHT = -62.5;
     static public final double VFINAL = 0;
     static public final double VINIT = -5;
-    static public final double VMAXFALL = 10;
+    static public final double VMAXFALL_MARIO = 10;
+    static public final double VMAXFALL_B_D = 5;
+    static public final double SPEED_LR = 3.5;
+    static public final int JUMPSCORE = 30;
+
+
 
 
     public ShadowDonkeyKong(Properties gameProps, Properties messageProps) {
@@ -102,7 +107,7 @@ public class ShadowDonkeyKong extends AbstractGame {
         timer = new Timer(Integer.parseInt(GAME_PROPS.getProperty("gamePlay.maxFrames")));
         scoreCounter = new ScoreCounter(0);
     }
-    
+
     /**
      * Render the relevant screen based on the keyboard input given by the user and the status of the gameplay.
      * @param input The current mouse/keyboard input.
@@ -136,17 +141,17 @@ public class ShadowDonkeyKong extends AbstractGame {
         }
         for (int i=0; i< barrels.length; i++) {
             barrels[i].drawImage();
-            barrels[i].UpdatePostition(platforms);
+            barrels[i].UpdatePostition(platforms, input);
         }
         for (int i=0; i< ladders.length; i++) {
             ladders[i].drawImage();
-            ladders[i].UpdatePostition(platforms);
+            ladders[i].UpdatePostition(platforms, input);
         }
         mario.drawImage();
-        mario.UpdatePostition(platforms);
+        mario.UpdatePostition(platforms, input);
         hammer.drawImage();
         donkey.drawImage();
-        donkey.UpdatePostition(platforms);
+        donkey.UpdatePostition(platforms, input);
 
         final Font fontScoreTime = new Font(GAME_PROPS.getProperty("font"),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.fontSize")));
@@ -156,6 +161,7 @@ public class ShadowDonkeyKong extends AbstractGame {
         fontScoreTime.drawString("SCORE " + ScoreCounter.getCurrentScore(),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.x")),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.y")));
+        ScoreCounter.JumpOver(mario, barrels);
     }
 
     private void HomeScreen (Input input){
