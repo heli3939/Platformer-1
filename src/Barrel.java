@@ -3,4 +3,9 @@ public class Barrel extends GameEntity{
     public Barrel(int x, int y) {
         super(BARREL_IMG, x, y);
     }
+
+    @Override
+    public void UpdatePostition(Platform[] platforms){
+
+    }
 }

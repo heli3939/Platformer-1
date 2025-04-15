@@ -18,7 +18,6 @@ public class ShadowDonkeyKong extends AbstractGame {
     private final String HOME_SCREEN = "HOMESCREEN";
     private final String GAMEPLAY_SCREEN = "GAMEPLAYSCREEN";
     private final String GAME_ENDING = "GAMEENDING";
-    
 
     private String gameScreen = HOME_SCREEN; // initialize the screen
 
@@ -42,6 +41,13 @@ public class ShadowDonkeyKong extends AbstractGame {
     private ScoreCounter scoreCounter;
 
     private final Image BACKGROUND;
+
+    static public final double GRAVITY = 0.2;
+    static public final double JUMPHEIGHT = -62.5;
+    static public final double VFINAL = 0;
+    static public final double VINIT = -5;
+    static public final double VMAXFALL = 10;
+
 
     public ShadowDonkeyKong(Properties gameProps, Properties messageProps) {
         super(Integer.parseInt(gameProps.getProperty("window.width")),
@@ -135,6 +141,7 @@ public class ShadowDonkeyKong extends AbstractGame {
             ladders[i].drawImage();
         }
         mario.drawImage();
+        mario.UpdatePostition(platforms);
         hammer.drawImage();
         donkey.drawImage();
 

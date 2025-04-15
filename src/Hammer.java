@@ -3,4 +3,8 @@ public class Hammer extends GameEntity{
     public Hammer(int x, int y) {
         super(HAMMER_IMG, x, y);
     }
+    @Override
+    public void UpdatePostition(Platform[] platforms) {
+
+    }
 }

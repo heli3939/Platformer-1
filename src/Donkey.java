@@ -3,4 +3,9 @@ public class Donkey extends GameEntity{
     public Donkey(int x, int y) {
         super(DONKEY_IMG, x, y);
     }
+
+    @Override
+    public void UpdatePostition(Platform[] platforms) {
+
+    }
 }

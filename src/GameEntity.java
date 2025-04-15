@@ -1,4 +1,3 @@
-import bagel.*;
 import bagel.Image;
 import bagel.util.Rectangle;
 import bagel.util.Point;
@@ -6,7 +5,7 @@ import bagel.util.Point;
 
 public abstract class GameEntity {
     public final int x;
-    public final int y;
+    public int y;
     public final Image image;
 
     public GameEntity(String imagePath, int x, int y) {
@@ -26,4 +25,7 @@ public abstract class GameEntity {
     public boolean isCollide(GameEntity other) {
         return (this.getBoundingBox()).intersects(other.getBoundingBox());
     }
+
+    public abstract void UpdatePostition(Platform[] platforms);
+
 }
