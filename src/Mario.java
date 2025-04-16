@@ -17,7 +17,7 @@ public class Mario extends GameEntity{
     }
 
     @Override
-    public void UpdatePostition(Platform[] platforms, Input input) {
+    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders) {
         v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_MARIO, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int currentPlatformTop = 0;
@@ -31,6 +31,24 @@ public class Mario extends GameEntity{
                 v_y = 0;
                 currentPlatformTop = (int) platform.getBoundingBox().top();
                 break;
+            }
+        }
+        boolean onLadder = false;
+        for (Ladder ladder: ladders){
+            int ladderL = (int) ladder.getBoundingBox().left();
+            int ladderR = (int) ladder.getBoundingBox().right();
+            int ladderBtm = (int) ladder.getBoundingBox().bottom();
+            if (x >= ladderL && x <= ladderR &&
+                    (marioBtm == ladderBtm || this.isCollide(ladder))){
+                onLadder = true;
+            }
+        }
+        if (onLadder){
+            v_y = 0;
+            if (input.isDown(Keys.UP)) {
+                y -= ShadowDonkeyKong.SPEED_CLIMB;
+            } else if (input.isDown(Keys.DOWN)) {
+                y += ShadowDonkeyKong.SPEED_CLIMB;
             }
         }
         if (input.isDown(Keys.SPACE) && this.getBoundingBox().bottom() == currentPlatformTop){

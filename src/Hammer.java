@@ -6,7 +6,7 @@ public class Hammer extends GameEntity{
         super(HAMMER_IMG, x, y);
     }
     @Override
-    public void UpdatePostition(Platform[] platforms, Input input) {
+    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders) {
 
     }
 }

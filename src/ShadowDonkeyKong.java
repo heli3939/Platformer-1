@@ -50,7 +50,7 @@ public class ShadowDonkeyKong extends AbstractGame {
     static public final double VMAXFALL_B_D = 5;
     static public final double SPEED_LR = 3.5;
     static public final int JUMPSCORE = 30;
-
+    static public final int SPEED_CLIMB = 2;
 
 
 
@@ -141,17 +141,17 @@ public class ShadowDonkeyKong extends AbstractGame {
         }
         for (int i=0; i< barrels.length; i++) {
             barrels[i].drawImage();
-            barrels[i].UpdatePostition(platforms, input);
+            barrels[i].UpdatePostition(input, platforms, ladders);
         }
         for (int i=0; i< ladders.length; i++) {
             ladders[i].drawImage();
-            ladders[i].UpdatePostition(platforms, input);
+            ladders[i].UpdatePostition(input, platforms, ladders);
         }
         mario.drawImage();
-        mario.UpdatePostition(platforms, input);
+        mario.UpdatePostition(input, platforms, ladders);
         hammer.drawImage();
         donkey.drawImage();
-        donkey.UpdatePostition(platforms, input);
+        donkey.UpdatePostition(input, platforms, ladders);
 
         final Font fontScoreTime = new Font(GAME_PROPS.getProperty("font"),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.fontSize")));
