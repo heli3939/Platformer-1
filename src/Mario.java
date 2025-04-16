@@ -6,9 +6,18 @@ public class Mario extends GameEntity{
     private final static String MARIOL_IMG = "res/mario_left.png";
     private final static String MARIOR_IMG = "res/mario_right.png";
 
+    private final static String MARIOLH_IMG = "res/mario_hammer_left.png";
+    private final static String MARIORH_IMG = "res/mario_hammer_right.png";
+
     private final static Image marioL = new Image(MARIOL_IMG);
     private final static Image marioR = new Image(MARIOR_IMG);
+
+    private final static Image marioLH = new Image(MARIOLH_IMG);
+    private final static Image marioRH = new Image(MARIORH_IMG);
+
     private Image  currentImage = marioR;
+
+    private boolean hasHammer = false;
 
     private double v_y = 0;
 
@@ -17,7 +26,7 @@ public class Mario extends GameEntity{
     }
 
     @Override
-    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders) {
+    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
         v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_MARIO, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int currentPlatformTop = 0;
@@ -51,17 +60,32 @@ public class Mario extends GameEntity{
                 y += ShadowDonkeyKong.SPEED_CLIMB;
             }
         }
+        if (!hasHammer && this.isCollide(hammer)){
+            hasHammer = true;
+            hammer.x = -1000;
+            System.out.println("Hammer collected!");
+        }
         if (input.isDown(Keys.SPACE) && this.getBoundingBox().bottom() == currentPlatformTop){
             v_y =  ShadowDonkeyKong.VINIT;
             y += (int) v_y;
         }
         if (input.isDown(Keys.RIGHT)){
             x += ShadowDonkeyKong.SPEED_LR;
-            currentImage = marioR;
+            if (hasHammer) {
+                currentImage = marioRH;
+            }
+            else{
+                currentImage = marioR;
+            }
         }
         if (input.isDown(Keys.LEFT)){
             x -= ShadowDonkeyKong.SPEED_LR;
-            currentImage = marioL;
+            if (hasHammer) {
+                currentImage = marioLH;
+            }
+            else{
+                currentImage = marioL;
+            }
         }
         currentImage.draw(x, y);
     }

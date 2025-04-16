@@ -141,17 +141,17 @@ public class ShadowDonkeyKong extends AbstractGame {
         }
         for (int i=0; i< barrels.length; i++) {
             barrels[i].drawImage();
-            barrels[i].UpdatePostition(input, platforms, ladders);
+            barrels[i].UpdatePostition(input, platforms, ladders, hammer);
         }
         for (int i=0; i< ladders.length; i++) {
             ladders[i].drawImage();
-            ladders[i].UpdatePostition(input, platforms, ladders);
+            ladders[i].UpdatePostition(input, platforms, ladders, hammer);
         }
         mario.drawImage();
-        mario.UpdatePostition(input, platforms, ladders);
+        mario.UpdatePostition(input, platforms, ladders, hammer);
         hammer.drawImage();
         donkey.drawImage();
-        donkey.UpdatePostition(input, platforms, ladders);
+        donkey.UpdatePostition(input, platforms, ladders, hammer);
 
         final Font fontScoreTime = new Font(GAME_PROPS.getProperty("font"),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.fontSize")));
