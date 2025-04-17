@@ -1,30 +1,19 @@
 public class ScoreCounter {
+    // initial score setting
     private static int currentScore = 0;
 
+    // constructor for score counter
     public ScoreCounter(int currentScore) {
         this.currentScore = currentScore;
     }
 
+    // getter for current score
     public static int getCurrentScore() {
         return currentScore;
     }
 
+    // add score to score counter
     public static void addScore(int scoreAdd){
         currentScore += scoreAdd;
     }
-
-
-//    public static void JumpOver (Mario mario, Barrel[] barrels){
-//        int marioBtm = (int) mario.getBoundingBox().bottom();
-//        for (Barrel barrel : barrels) {
-//            int barrelTop = (int) barrel.getBoundingBox().bottom();
-//            int barrelL = (int) barrel.getBoundingBox().left();
-//            int barrelR = (int) barrel.getBoundingBox().right();
-//            if (marioBtm < barrelTop && mario.x <= barrelR && mario.x >= barrelL){
-//                addScore(ShadowDonkeyKong.JUMPSCORE);
-//                System.out.println("Jumping!");
-//            }
-//        }
-//    }
-
 }
