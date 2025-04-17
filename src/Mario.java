@@ -1,6 +1,7 @@
 import bagel.Image;
 import bagel.Input;
 import bagel.Keys;
+import java.util.Arrays;
 
 public class Mario extends GameEntity{
     private final static String MARIOL_IMG = "res/mario_left.png";
@@ -8,6 +9,9 @@ public class Mario extends GameEntity{
 
     private final static String MARIOLH_IMG = "res/mario_hammer_left.png";
     private final static String MARIORH_IMG = "res/mario_hammer_right.png";
+
+    private final static String BG_IMG = "res/background.png";
+    private final static Image Bg = new Image(BG_IMG);
 
     private final static Image marioL = new Image(MARIOL_IMG);
     private final static Image marioR = new Image(MARIOR_IMG);
@@ -20,7 +24,6 @@ public class Mario extends GameEntity{
 
     private boolean hasHammer = false;
     private boolean hitDonkey = false;
-    private boolean onPlatform = false;
 
     private double v_y = 0;
 
@@ -30,33 +33,35 @@ public class Mario extends GameEntity{
 
     @Override
     public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey, Barrel[] barrels) {
-        v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_MARIO, v_y + ShadowDonkeyKong.GRAVITY);
+        v_y = Math.min(ShadowDonkeyKong.VMAXFALL_MARIO, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int currentPlatformTop = 0;
         int marioBtm = (int) this.getBoundingBox().bottom();
-        int marioHeight = (int) (this.getBoundingBox().top() - this.getBoundingBox().bottom());
+        int marioHeight = (int) (this.getBoundingBox().bottom() - this.getBoundingBox().top());
+        boolean[] onPlatform = new boolean[platforms.length];
+        int i=0;
         for (Platform platform : platforms) {
             int platformTop = (int) platform.getBoundingBox().top();
             int platformBtm = (int) platform.getBoundingBox().bottom();
-            if (this.isCollide(platform) && marioBtm >= platformTop && marioBtm <= platformBtm){
-                y = platformTop + marioHeight / 2;
+            if (this.isCollide(platform) && marioBtm >= platformTop && marioBtm <= platformBtm) {
+                y = platformTop - marioHeight / 2;
                 v_y = 0;
                 currentPlatformTop = (int) platform.getBoundingBox().top();
+                onPlatform[++i] = true;
                 break;
             }
-            onPlatform = this.isCollide(platform);
         }
         boolean onLadder = false;
-        for (Ladder ladder: ladders){
+        for (Ladder ladder : ladders) {
             int ladderL = (int) ladder.getBoundingBox().left();
             int ladderR = (int) ladder.getBoundingBox().right();
             int ladderBtm = (int) ladder.getBoundingBox().bottom();
             if (x >= ladderL && x <= ladderR &&
-                    (marioBtm == ladderBtm || this.isCollide(ladder))){
+                    (marioBtm == ladderBtm || this.isCollide(ladder))) {
                 onLadder = true;
             }
         }
-        if (onLadder){
+        if (onLadder) {
             v_y = 0;
             if (input.isDown(Keys.UP)) {
                 y -= ShadowDonkeyKong.SPEED_CLIMB;
@@ -64,54 +69,69 @@ public class Mario extends GameEntity{
                 y += ShadowDonkeyKong.SPEED_CLIMB;
             }
         }
-        if (!hasHammer && this.isCollide(hammer)){
+        if (!hasHammer && this.isCollide(hammer)) {
             hasHammer = true;
             hammer.x = ShadowDonkeyKong.OUTOFSCREEN;
             System.out.println("Hammer collected!");
         }
 
-        if (input.isDown(Keys.SPACE) && this.getBoundingBox().bottom() == currentPlatformTop){
-            v_y =  ShadowDonkeyKong.VINIT;
+        if (input.isDown(Keys.SPACE) && this.getBoundingBox().bottom() == currentPlatformTop) {
+            v_y = ShadowDonkeyKong.VINIT;
             y += (int) v_y;
-        }
-        if (this.isCollide(donkey)){
-            if (hasHammer){
-                hitDonkey = true;
-                ShadowDonkeyKong.isWin = true;
-            }
-            ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
-        }
-        for (Barrel barrel: barrels){
-            if (this.isCollide(barrel)){
-                if (hasHammer){
-                    barrel.x = ShadowDonkeyKong.OUTOFSCREEN;
-                }
-                else{
-                    ShadowDonkeyKong.isWin = false;
-                    ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
+            for (Barrel barrel : barrels) {
+                int barrelTop = (int) barrel.getBoundingBox().top();
+                int barrelL = (int) barrel.getBoundingBox().left();
+                int barrelR = (int) barrel.getBoundingBox().right();
+                if (marioBtm > barrelTop && marioBtm < marioBtm + ShadowDonkeyKong.JUMPHEIGHT
+                        && this.x >= barrelL && this.x <= barrelR && input.isDown(Keys.SPACE)) {
+
+                    ScoreCounter.addScore(ShadowDonkeyKong.JUMPSCORE);
+                    System.out.println("Jumping!");
                 }
             }
+
+
+            }
+            if (this.isCollide(donkey)) {
+                if (hasHammer) {
+                    hitDonkey = true;
+                    ShadowDonkeyKong.isWin = true;
+                }
+                ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
+            }
+            for (Barrel barrel : barrels) {
+                if (this.isCollide(barrel)) {
+                    if (hasHammer) {
+                        barrel.x = ShadowDonkeyKong.OUTOFSCREEN;
+                        System.out.println("Barrel destroyed!");
+                        ScoreCounter.addScore(ShadowDonkeyKong.BARRELSCORE);
+                    } else {
+                        ShadowDonkeyKong.isWin = false;
+                        ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
+                    }
+                }
+            }
+
+            if (input.isDown(Keys.RIGHT)) {
+                x += ShadowDonkeyKong.SPEED_LR;
+                x = (int) Math.min(x, Bg.getWidth());
+                if (hasHammer) {
+                    currentImage = marioRH;
+                } else {
+                    currentImage = marioR;
+                }
+            }
+            if (input.isDown(Keys.LEFT)) {
+                x -= ShadowDonkeyKong.SPEED_LR;
+                x = Math.max(0, x);
+                if (hasHammer) {
+                    currentImage = marioLH;
+                } else {
+                    currentImage = marioL;
+                }
+            }
+            currentImage.draw(x, y);
         }
 
-        if (input.isDown(Keys.RIGHT)){
-            x += ShadowDonkeyKong.SPEED_LR;
-            if (hasHammer) {
-                currentImage = marioRH;
-            }
-            else{
-                currentImage = marioR;
-            }
-        }
-        if (input.isDown(Keys.LEFT)){
-            x -= ShadowDonkeyKong.SPEED_LR;
-            if (hasHammer) {
-                currentImage = marioLH;
-            }
-            else{
-                currentImage = marioL;
-            }
-        }
-        currentImage.draw(x, y);
-    }
 
 }
