@@ -8,7 +8,7 @@ public class Donkey extends GameEntity{
     private double v_y = 0;
 
     @Override
-    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
         v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_B_D, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int donkeyBtm = (int) this.getBoundingBox().bottom();
@@ -19,7 +19,6 @@ public class Donkey extends GameEntity{
             if (this.isCollide(platform) && donkeyBtm >= platformTop && donkeyBtm <= platformBtm) {
                 y = platformTop + donkeyHeight / 2;
                 v_y = 0;
-
                 break;
             }
         }

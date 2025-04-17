@@ -1,4 +1,6 @@
 import bagel.*;
+import jdk.jshell.Snippet;
+
 import java.util.Properties;
 
 /**
@@ -15,11 +17,13 @@ public class ShadowDonkeyKong extends AbstractGame {
     private final Properties MESSAGE_PROPS;
 
     // Switch between three different screens
-    private final String HOME_SCREEN = "HOMESCREEN";
-    private final String GAMEPLAY_SCREEN = "GAMEPLAYSCREEN";
-    private final String GAME_ENDING = "GAMEENDING";
+    public static final String HOME_SCREEN = "HOMESCREEN";
+    public static final String GAMEPLAY_SCREEN = "GAMEPLAYSCREEN";
+    public static final String GAME_ENDING = "GAMEENDING";
 
-    private String gameScreen = HOME_SCREEN; // initialize the screen
+    public static boolean isWin = false;
+
+    public static String gameScreen = HOME_SCREEN; // initialize the screen
 
     private Platform[] platforms;
     private int[] platformX;
@@ -123,8 +127,60 @@ public class ShadowDonkeyKong extends AbstractGame {
         } else if (gameScreen.equals(GAMEPLAY_SCREEN)) {
             GamePlayScreen(input);
         } else if (gameScreen.equals(GAME_ENDING)) {
-            // add later
+            GameEnding(input);
         }
+    }
+
+    private void ResetGame (){
+        mario = new Mario(Integer.parseInt(GAME_PROPS.getProperty("mario.start.x")),
+                Integer.parseInt(GAME_PROPS.getProperty("mario.start.y")));
+        hammer = new Hammer(Integer.parseInt(GAME_PROPS.getProperty("hammer.start.x")),
+                Integer.parseInt(GAME_PROPS.getProperty("hammer.start.y")));
+        donkey = new Donkey(Integer.parseInt(GAME_PROPS.getProperty("donkey.x")),
+                Integer.parseInt(GAME_PROPS.getProperty("donkey.y")));
+        for (int i = 0; i < barrels.length; i++) {
+            barrels[i] = new Barrel(barrelX[i], barrelY[i]);
+        }
+        for (int i = 0; i < ladders.length; i++) {
+            ladders[i] = new Ladder(ladderX[i], ladderY[i]);
+        }
+        scoreCounter = new ScoreCounter(0);
+        timer = new Timer(Integer.parseInt(GAME_PROPS.getProperty("gamePlay.maxFrames")));
+        isWin = false;
+    }
+
+    private void GameEnding (Input input){
+        DrawBG();
+        final Font fontEndStatus = new Font(GAME_PROPS.getProperty("font"),
+                Integer.parseInt(GAME_PROPS.getProperty("gameEnd.status.fontSize")));
+        final String LOSTSMSG = "GAME OVER, YOU LOST!";
+        final String WONMSG = "CONGRATULATION, YOU WON!";
+        String StatusMsg = LOSTSMSG;
+        if (isWin){
+            StatusMsg = WONMSG;
+        }
+        fontEndStatus.drawString(StatusMsg,
+                ((Integer.parseInt(GAME_PROPS.getProperty("window.width")) -
+                        fontEndStatus.getWidth(StatusMsg)) / 2),
+                Integer.parseInt(GAME_PROPS.getProperty("gameEnd.status.y")));
+        final Font fontEndScore = new Font(GAME_PROPS.getProperty("font"),
+                Integer.parseInt(GAME_PROPS.getProperty("gameEnd.scores.fontSize")));
+        final String SCOREDISPLAY = "YOUR FINAL SCORE ";
+        final String ScoreDisplay = SCOREDISPLAY + scoreCounter.getCurrentScore();
+        fontEndScore.drawString(ScoreDisplay,
+                ((Integer.parseInt(GAME_PROPS.getProperty("window.width")) -
+                        fontEndScore.getWidth(ScoreDisplay)) / 2),
+                Integer.parseInt(GAME_PROPS.getProperty("gameEnd.scores.y")));
+        final String CONTINUE = "PRESS SPACE TO CONTINUE...";
+        fontEndStatus.drawString(CONTINUE,
+                ((Integer.parseInt(GAME_PROPS.getProperty("window.width")) -
+                        fontEndStatus.getWidth(CONTINUE)) / 2),
+                Integer.parseInt(GAME_PROPS.getProperty("window.height")) - 100);
+        if (input.isDown(Keys.SPACE)){
+            ResetGame();
+            gameScreen = HOME_SCREEN;
+        }
+
     }
 
     private void DrawBG (){
@@ -141,17 +197,17 @@ public class ShadowDonkeyKong extends AbstractGame {
         }
         for (int i=0; i< barrels.length; i++) {
             barrels[i].drawImage();
-            barrels[i].UpdatePostition(input, platforms, ladders, hammer);
+            barrels[i].Updating(input, platforms, ladders, hammer, donkey);
         }
         for (int i=0; i< ladders.length; i++) {
             ladders[i].drawImage();
-            ladders[i].UpdatePostition(input, platforms, ladders, hammer);
+            ladders[i].Updating(input, platforms, ladders, hammer, donkey);
         }
         mario.drawImage();
-        mario.UpdatePostition(input, platforms, ladders, hammer);
+        mario.Updating(input, platforms, ladders, hammer, donkey);
         hammer.drawImage();
         donkey.drawImage();
-        donkey.UpdatePostition(input, platforms, ladders, hammer);
+        donkey.Updating(input, platforms, ladders, hammer, donkey);
 
         final Font fontScoreTime = new Font(GAME_PROPS.getProperty("font"),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.fontSize")));

@@ -10,7 +10,7 @@ public class Ladder extends GameEntity {
     }
 
     @Override
-    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
         int ladderHeight = (int) (this.getBoundingBox().bottom() -
                 this.getBoundingBox().top());
         int platformHeight = (int) (platforms[0].getBoundingBox().bottom() -
@@ -20,7 +20,7 @@ public class Ladder extends GameEntity {
             int higherTop = (int) platforms[i+1].getBoundingBox().top();
 
             if (this.isCollide(platforms[i])) {
-                y = higherBtm+ladderHeight / 2 - 29;
+                y = higherBtm + ladderHeight / 2 - 29;
                 break;
             }
         }

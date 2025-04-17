@@ -7,7 +7,7 @@ public class Platform extends GameEntity{
     }
 
     @Override
-    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
 
     }
 }

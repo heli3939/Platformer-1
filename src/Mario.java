@@ -15,9 +15,11 @@ public class Mario extends GameEntity{
     private final static Image marioLH = new Image(MARIOLH_IMG);
     private final static Image marioRH = new Image(MARIORH_IMG);
 
+
     private Image  currentImage = marioR;
 
     private boolean hasHammer = false;
+    private boolean hitDonkey = false;
 
     private double v_y = 0;
 
@@ -26,7 +28,7 @@ public class Mario extends GameEntity{
     }
 
     @Override
-    public void UpdatePostition(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
         v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_MARIO, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int currentPlatformTop = 0;
@@ -68,6 +70,13 @@ public class Mario extends GameEntity{
         if (input.isDown(Keys.SPACE) && this.getBoundingBox().bottom() == currentPlatformTop){
             v_y =  ShadowDonkeyKong.VINIT;
             y += (int) v_y;
+        }
+        if (this.isCollide(donkey)){
+            if (hasHammer){
+                hitDonkey = true;
+                ShadowDonkeyKong.isWin = true;
+                ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
+            }
         }
         if (input.isDown(Keys.RIGHT)){
             x += ShadowDonkeyKong.SPEED_LR;
