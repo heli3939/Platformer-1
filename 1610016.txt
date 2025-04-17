@@ -1,1 +1,20 @@
-b18d1ef - heli3939, 2 days ago : tut4setup
+b52f880 - xinyueluo, 2 minutes ago : add comments and polish
+35dba0c - xinyueluo, 75 minutes ago : ensure mario not out of screen
+d6c9ac3 - xinyueluo, 3 hours ago : implement mechanism that game will lose when mario touch barrel and donkeykong, and able to hit them by hammer, and successfully direct different situations to correct game ending screens
+2305878 - xinyueluo, 4 hours ago : implement game ending screen for win and can go back to start a new game
+8b8644c - xinyueluo, 17 hours ago : implement collecting hammer and change of mario picture when holding it
+73a6bd3 - xinyueluo, 18 hours ago : climbing ladders work
+1400982 - xinyueluo, 18 hours ago : ladder seems to be work but can only reach 1 pixel lower than the platform now
+96d702c - xinyueluo, 2 days ago : implement different Mario while facing different directions, functionarlity for left, right and jump (need to look back later), start to work on score adding when jumping over barrels
+d26ef69 - xinyueluo, 2 days ago : allignment (fall on platform) works for ever gameentity except for ladders
+c42cbeb - xinyueluo, 2 days ago : Mario falls on the correct position with correct speed on the platfrom
+61db1b6 - xinyueluo, 4 days ago : implement countdown functionality for timer and basic layout for score counter
+7f02826 - xinyueluo, 4 days ago : optimize design for displaying backgroun and game entity, finish display for all game entities at the first frame
+f6d5abf - xinyueluo, 5 days ago : construct initial functionaility for GameEntity superclass, implement one subclass platform and successfully draw platforms on the gameplayscreen
+0735ebf - xinyueluo, 5 days ago : implement interface of homescreen of the game, setup basic logic of switching gamescreens
+1071727 - xinyueluo, 5 days ago : mannually revert and restart project1
+b97102c - heli3939, 5 days ago : implement interface of homescreen of the game, setup basic logic of switching gamescreens
+4dac851 - xinyueluo, 11 days ago : Merge branch 'revert-cff669b7' into 'main'
+e46de72 - xinyueluo, 11 days ago : Revert "Initial Commit"
+e3ef2ff - heli3939, 11 days ago : Initial commit
+cff669b - heli3939, 11 days ago : Initial Commit
