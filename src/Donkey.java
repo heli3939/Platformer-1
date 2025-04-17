@@ -8,7 +8,7 @@ public class Donkey extends GameEntity{
     private double v_y = 0;
 
     @Override
-    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey, Barrel[] barrels) {
         v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_B_D, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int donkeyBtm = (int) this.getBoundingBox().bottom();

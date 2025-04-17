@@ -27,6 +27,7 @@ public abstract class GameEntity {
         return (this.getBoundingBox()).intersects(other.getBoundingBox());
     }
 
-    public abstract void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey);
+    public abstract void Updating(Input input, Platform[] platforms, Ladder[] ladders,
+                                  Hammer hammer, Donkey donkey, Barrel[] barrels);
 
 }

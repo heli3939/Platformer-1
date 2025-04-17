@@ -12,7 +12,7 @@ public class Barrel extends GameEntity{
 
 
     @Override
-    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey, Barrel[] barrels) {
         v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_B_D, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int barrelBtm = (int) this.getBoundingBox().bottom();

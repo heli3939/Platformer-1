@@ -1,5 +1,4 @@
 import bagel.*;
-import jdk.jshell.Snippet;
 
 import java.util.Properties;
 
@@ -47,7 +46,8 @@ public class ShadowDonkeyKong extends AbstractGame {
     private final Image BACKGROUND;
 
     static public final double GRAVITY = 0.2;
-    static public final double JUMPHEIGHT = -62.5;
+    static public
+    final double JUMPHEIGHT = -62.5;
     static public final double VFINAL = 0;
     static public final double VINIT = -5;
     static public final double VMAXFALL_MARIO = 10;
@@ -55,6 +55,8 @@ public class ShadowDonkeyKong extends AbstractGame {
     static public final double SPEED_LR = 3.5;
     static public final int JUMPSCORE = 30;
     static public final int SPEED_CLIMB = 2;
+
+    static public final int OUTOFSCREEN = -10000;
 
 
 
@@ -197,17 +199,17 @@ public class ShadowDonkeyKong extends AbstractGame {
         }
         for (int i=0; i< barrels.length; i++) {
             barrels[i].drawImage();
-            barrels[i].Updating(input, platforms, ladders, hammer, donkey);
+            barrels[i].Updating(input, platforms, ladders, hammer, donkey, barrels);
         }
         for (int i=0; i< ladders.length; i++) {
             ladders[i].drawImage();
-            ladders[i].Updating(input, platforms, ladders, hammer, donkey);
+            ladders[i].Updating(input, platforms, ladders, hammer, donkey, barrels);
         }
         mario.drawImage();
-        mario.Updating(input, platforms, ladders, hammer, donkey);
+        mario.Updating(input, platforms, ladders, hammer, donkey, barrels);
         hammer.drawImage();
         donkey.drawImage();
-        donkey.Updating(input, platforms, ladders, hammer, donkey);
+        donkey.Updating(input, platforms, ladders, hammer, donkey, barrels);
 
         final Font fontScoreTime = new Font(GAME_PROPS.getProperty("font"),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.fontSize")));
@@ -218,6 +220,10 @@ public class ShadowDonkeyKong extends AbstractGame {
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.x")),
                 Integer.parseInt(GAME_PROPS.getProperty("gamePlay.score.y")));
         ScoreCounter.JumpOver(mario, barrels);
+        if (timer.RemainingTime() == 0){
+            isWin = false;
+            gameScreen = GAME_ENDING;
+        }
     }
 
     private void HomeScreen (Input input){

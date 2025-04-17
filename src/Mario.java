@@ -20,6 +20,7 @@ public class Mario extends GameEntity{
 
     private boolean hasHammer = false;
     private boolean hitDonkey = false;
+    private boolean onPlatform = false;
 
     private double v_y = 0;
 
@@ -28,7 +29,7 @@ public class Mario extends GameEntity{
     }
 
     @Override
-    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey, Barrel[] barrels) {
         v_y =  Math.min(ShadowDonkeyKong.VMAXFALL_MARIO, v_y + ShadowDonkeyKong.GRAVITY);
         y += (int) v_y;
         int currentPlatformTop = 0;
@@ -43,6 +44,7 @@ public class Mario extends GameEntity{
                 currentPlatformTop = (int) platform.getBoundingBox().top();
                 break;
             }
+            onPlatform = this.isCollide(platform);
         }
         boolean onLadder = false;
         for (Ladder ladder: ladders){
@@ -64,9 +66,10 @@ public class Mario extends GameEntity{
         }
         if (!hasHammer && this.isCollide(hammer)){
             hasHammer = true;
-            hammer.x = -1000;
+            hammer.x = ShadowDonkeyKong.OUTOFSCREEN;
             System.out.println("Hammer collected!");
         }
+
         if (input.isDown(Keys.SPACE) && this.getBoundingBox().bottom() == currentPlatformTop){
             v_y =  ShadowDonkeyKong.VINIT;
             y += (int) v_y;
@@ -75,9 +78,21 @@ public class Mario extends GameEntity{
             if (hasHammer){
                 hitDonkey = true;
                 ShadowDonkeyKong.isWin = true;
-                ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
+            }
+            ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
+        }
+        for (Barrel barrel: barrels){
+            if (this.isCollide(barrel)){
+                if (hasHammer){
+                    barrel.x = ShadowDonkeyKong.OUTOFSCREEN;
+                }
+                else{
+                    ShadowDonkeyKong.isWin = false;
+                    ShadowDonkeyKong.gameScreen = ShadowDonkeyKong.GAME_ENDING;
+                }
             }
         }
+
         if (input.isDown(Keys.RIGHT)){
             x += ShadowDonkeyKong.SPEED_LR;
             if (hasHammer) {

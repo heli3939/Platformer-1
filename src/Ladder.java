@@ -10,7 +10,7 @@ public class Ladder extends GameEntity {
     }
 
     @Override
-    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey) {
+    public void Updating(Input input, Platform[] platforms, Ladder[] ladders, Hammer hammer, Donkey donkey, Barrel[] barrels) {
         int ladderHeight = (int) (this.getBoundingBox().bottom() -
                 this.getBoundingBox().top());
         int platformHeight = (int) (platforms[0].getBoundingBox().bottom() -
